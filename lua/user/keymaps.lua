@@ -15,35 +15,79 @@ vim.g.mapleader = " "
 --   term_mode = "t",
 --   command_mode = "c",
 
--- Normal --
+-- Edit and reload nvim config file quickly
+keymap("n", "<leader>ev", "<cmd>tabnew $MYVIMRC <bar> tcd %:h<cr>", {
+  silent = true,
+  desc = "open init.lua",
+})
+
+keymap("n", "<leader>sv", "", {
+  silent = true,
+  desc = "reload init.lua",
+  callback = function()
+    vim.cmd([[
+      update $MYVIMRC
+      source $MYVIMRC
+    ]])
+    vim.notify("Nvim config successfully reloaded!", vim.log.levels.INFO, { title = "nvim-config" })
+  end,
+})
+
+-- Basic Edit -- 
+-- Change text without putting it into the vim register,
+-- see https://stackoverflow.com/q/54255/6064933
+keymap("n", "c", '"_c', opts)
+keymap("n", "C", '"_C', opts)
+keymap("n", "cc", '"_cc', opts)
+keymap("x", "c", '"_c', opts)
+
+-- Better paste
+keymap("v", "p", '"_dP', opts)
+
+-- Go to the beginning and end of current line in insert mode quickly
+keymap("i", "<C-A>", "<HOME>")
+keymap("i", "<C-E>", "<END>")
+
+-- Go to beginning of command in command-line mode
+keymap("c", "<C-A>", "<HOME>")
+
+-- Delete the character to the right of the cursor
+keymap("i", "<C-D>", "<DEL>")
+
+-- Window Management --
 -- Better window navigation
 keymap("n", "<C-h>", "<C-w>h", opts)
 keymap("n", "<C-j>", "<C-w>j", opts)
 keymap("n", "<C-k>", "<C-w>k", opts)
 keymap("n", "<C-l>", "<C-w>l", opts)
 
--- Resize with arrows
-keymap("n", "<C-Up>", ":resize -2<CR>", opts)
-keymap("n", "<C-Down>", ":resize +2<CR>", opts)
-keymap("n", "<C-Left>", ":vertical resize -2<CR>", opts)
-keymap("n", "<C-Right>", ":vertical resize +2<CR>", opts)
+-- split screen
+keymap("n", "<leader>bl", ":vsplit<cr>", opts)
+keymap("n", "<leader>bj", ":split<cr>", opts)
 
--- Navigate buffers
-keymap("n", "<S-l>", ":bnext<CR>", opts)
-keymap("n", "<S-h>", ":bprevious<CR>", opts)
+
+-- Resize with arrows
+keymap("n", "<S-k>", ":resize -2<CR>", opts)
+keymap("n", "<S-j>", ":resize +2<CR>", opts)
+keymap("n", "<S-h>", ":vertical resize -2<CR>", opts)
+keymap("n", "<S-l>", ":vertical resize +2<CR>", opts)
+
+-- Buffer Management --
+-- Save buffer
+keymap("n", "<leader>w", "<cmd>update<cr>", opts)
+-- Close buffers
+keymap("n", "<leader>q", ":q<cr>", opts)
+
+-- Navigate buffers tab
+keymap("n", "<C-.>", ":bnext<CR>", opts)
+keymap("n", "<C-,>", ":bprevious<CR>", opts)
 
 -- Clear highlights
 keymap("n", "<leader>h", "<cmd>nohlsearch<CR>", opts)
 
--- Close buffers
-keymap("n", "<S-q>", "<cmd>Bdelete!<CR>", opts)
-
--- Better paste
-keymap("v", "p", '"_dP', opts)
-
 -- Insert --
 -- Press jk fast to enter
-keymap("i", "jk", "<ESC>", opts)
+keymap({"i", "c"}, "jk", "<ESC>", opts)
 
 -- Visual --
 -- Stay in indent mode

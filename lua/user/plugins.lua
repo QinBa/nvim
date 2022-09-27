@@ -85,7 +85,8 @@ return packer.startup(function(use)
   -- Treesitter
   use {
     "nvim-treesitter/nvim-treesitter",
-    commit = "518e27589c0463af15463c9d675c65e464efc2fe",
+    run = function() require('nvim-treesitter.install').update({ with_sync = true }) end,
+    -- commit = "518e27589c0463af15463c9d675c65e464efc2fe",
   }
 
   -- Git
